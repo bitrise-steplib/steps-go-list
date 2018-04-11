@@ -59,18 +59,6 @@ workflows:
 
   integration_test:
     steps:
-    - change-workdir:
-        title: Switch working dir to ./_tmp dir
-        inputs:
-        - path: ./_tmp
-        - is_create_path: true
-    - path::./:
-        title: Step Test
-        inputs:
-        - packages: github.com/bitrise-steplib/steps-golint
-
-  integration_test:
-    steps:
     - path::./:
         title: Step Test
         run_if: true
