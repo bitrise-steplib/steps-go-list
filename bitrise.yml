@@ -10,12 +10,27 @@ workflows:
   test:
     before_run:
     - audit-this-step
-    after_run:
     - go-tests
-    - integration_test
+    steps:
+    - path::./:
+        title: Step Test
+        run_if: true
+        inputs:
+        - exclude: "*/vendor/*\n*gotool"
+    - script:
+        title: Output Test
+        inputs:
+        - content: |
+            #!/usr/bin/env bash
+            set -e
+            echo '$BITRISE_GO_PACKAGES='"($BITRISE_GO_PACKAGES)"
+            EXPECTED=github.com/bitrise-steplib/steps-go-list
+            if [[ "$BITRISE_GO_PACKAGES" != "$EXPECTED" ]] ; then
+              echo "should be: $EXPECTED"
+              exit 1
+            fi
 
   go-tests:
-    before_run:
     steps:
     - script:
         title: Export go files to test
@@ -56,26 +71,6 @@ workflows:
             #!/bin/bash
             set -ex
             go test $(go list ./... | grep -v vendor)
-
-  integration_test:
-    steps:
-    - path::./:
-        title: Step Test
-        run_if: true
-        inputs:
-        - exclude: "*/vendor/*\n*gotool"
-    - script:
-        title: Output Test
-        inputs:
-        - content: |
-            #!/usr/bin/env bash
-            set -e
-            echo '$BITRISE_GO_PACKAGES='"($BITRISE_GO_PACKAGES)"
-            EXPECTED=github.com/bitrise-steplib/steps-go-list
-            if [[ "$BITRISE_GO_PACKAGES" != "$EXPECTED" ]] ; then
-              echo "should be: $EXPECTED"
-              exit 1
-            fi
 
   # ----------------------------------------------------------------
   # --- Utility workflows
