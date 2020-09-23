@@ -40,24 +40,22 @@ func main() {
 	}
 }
 
-func filterPackages(a, b []string) []string {
+func filterPackages(original, exclude []string) []string {
 	m := make(map[string]bool)
-	for _, s := range a {
-		m[s] = false
+	for _, s := range original {
+		m[s] = true
 	}
-	for _, s := range b {
-		if !m[s] {
-			m[s] = true
-		}
+	for _, s := range exclude {
+		m[s] = false
 	}
 
 	var result []string
 	for k, v := range m {
-		if !v {
-			log.Printf("- %s", k)
+		if v {
+			log.Donef("✓ %s", k)
 			result = append(result, k)
 		} else {
-			log.Donef("✓ %s", k)
+			log.Printf("- %s", k)
 		}
 	}
 
