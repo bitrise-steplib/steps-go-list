@@ -10,6 +10,16 @@ import (
 	"github.com/ryanuber/go-glob"
 )
 
+// FilteredLines ...
+type FilteredLines struct {
+	Removed  []string
+	Expected []string
+}
+
+var commandExcludePatterns = []string{
+	"*go: downloading*",
+}
+
 func failf(format string, args ...interface{}) {
 	log.Errorf(format, args...)
 	os.Exit(1)
@@ -27,28 +37,37 @@ func main() {
 
 	excludes := strings.Split(exclude, "\n")
 
-	commandExecutor := gotool.CommandExecutor{}
-	packages, err := gotool.ListPackages(commandExecutor)
+	commandResult, err := gotool.ListPackages(gotool.CommandExecutor{})
 	if err != nil {
 		failf("Failed to list packages: %s", err)
 	}
 
-	log.Infof("\nList of packages:")
-	filteredPackages := filterPackages(packages, excludes)
+	filteredOutput := filterLines(commandResult, commandExcludePatterns)
+	for _, l := range filteredOutput.Removed {
+		log.Printf("%s", l)
+	}
 
-	if err := tools.ExportEnvironmentWithEnvman("BITRISE_GO_PACKAGES", strings.Join(filteredPackages, "\n")); err != nil {
+	log.Infof("\nList of packages:")
+	filteredPackages := filterLines(commandResult, excludes)
+	for _, l := range filteredPackages.Removed {
+		log.Printf("- %s", l)
+	}
+	for _, l := range filteredPackages.Expected {
+		log.Donef("✓ %s", l)
+	}
+
+	if err := tools.ExportEnvironmentWithEnvman("BITRISE_GO_PACKAGES", strings.Join(filteredPackages.Expected, "\n")); err != nil {
 		failf("Failed to export packages, error: %s", err)
 	}
 }
 
-func filterPackages(original, excludes []string) []string {
-	var result []string
+func filterLines(original, excludes []string) FilteredLines {
+	var result FilteredLines
 	for _, p := range original {
-		if !matching(p, excludes) {
-			log.Donef("✓ %s", p)
-			result = append(result, p)
+		if matching(p, excludes) {
+			result.Removed = append(result.Removed, p)
 		} else {
-			log.Printf("- %s", p)
+			result.Expected = append(result.Expected, p)
 		}
 	}
 
