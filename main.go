@@ -7,7 +7,6 @@ import (
 	"github.com/bitrise-io/go-utils/log"
 	"github.com/bitrise-steplib/steps-go-list/gotool"
 	"github.com/bitrise-tools/go-steputils/tools"
-	glob "github.com/ryanuber/go-glob"
 )
 
 func failf(format string, args ...interface{}) {
@@ -27,27 +26,40 @@ func main() {
 
 	excludes := strings.Split(exclude, "\n")
 
-	packages, err := gotool.ListPackages()
+	commandExecutor := gotool.CommandExecutor{}
+	packages, err := gotool.ListPackages(commandExecutor)
 	if err != nil {
 		failf("Failed to list packages: %s", err)
 	}
 
 	log.Infof("\nList of packages:")
-	var filteredPackages []string
-
-packageLoop:
-	for _, p := range packages {
-		for _, e := range excludes {
-			if glob.Glob(e, p) {
-				log.Printf("- %s", p)
-				continue packageLoop
-			}
-		}
-		log.Donef("✓ %s", p)
-		filteredPackages = append(filteredPackages, p)
-	}
+	filteredPackages := filterPackages(packages, excludes)
 
 	if err := tools.ExportEnvironmentWithEnvman("BITRISE_GO_PACKAGES", strings.Join(filteredPackages, "\n")); err != nil {
 		failf("Failed to export packages, error: %s", err)
 	}
+}
+
+func filterPackages(a, b []string) []string {
+	m := make(map[string]bool)
+	for _, s := range a {
+		m[s] = false
+	}
+	for _, s := range b {
+		if !m[s] {
+			m[s] = true
+		}
+	}
+
+	var result []string
+	for k, v := range m {
+		if !v {
+			log.Printf("- %s", k)
+			result = append(result, k)
+		} else {
+			log.Donef("✓ %s", k)
+		}
+	}
+
+	return result
 }
