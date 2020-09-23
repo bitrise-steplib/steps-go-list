@@ -7,6 +7,7 @@ import (
 	"github.com/bitrise-io/go-utils/log"
 	"github.com/bitrise-steplib/steps-go-list/gotool"
 	"github.com/bitrise-tools/go-steputils/tools"
+	"github.com/ryanuber/go-glob"
 )
 
 func failf(format string, args ...interface{}) {
@@ -40,24 +41,26 @@ func main() {
 	}
 }
 
-func filterPackages(original, exclude []string) []string {
-	m := make(map[string]bool)
-	for _, s := range original {
-		m[s] = true
-	}
-	for _, s := range exclude {
-		m[s] = false
-	}
-
+func filterPackages(original, excludes []string) []string {
 	var result []string
-	for k, v := range m {
-		if v {
-			log.Donef("✓ %s", k)
-			result = append(result, k)
+	for _, p := range original {
+		if !matching(p, excludes) {
+			log.Donef("✓ %s", p)
+			result = append(result, p)
 		} else {
-			log.Printf("- %s", k)
+			log.Printf("- %s", p)
 		}
 	}
 
 	return result
+}
+
+func matching(str string, matches []string) bool {
+	for _, e := range matches {
+		if glob.Glob(e, str) {
+			return true
+		}
+	}
+
+	return false
 }
