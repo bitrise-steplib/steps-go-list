@@ -56,13 +56,12 @@
   version = "v0.3.0"
 
 [[projects]]
-  digest = "1:0357d51eb26b9b6aee097fca537eac00d8aebb7e85163c0ee1e45bf8d0373d41"
+  digest = "1:fc44ab3ee6f79e2b4c67ea294f500aa151f7b882a706eb7f3e881aba1de3a729"
   name = "github.com/stretchr/testify"
   packages = [
-    ".",
     "assert",
-    "http",
     "mock",
+    "require",
   ]
   pruneopts = "UT"
   revision = "f654a9112bbeac49ca2cd45bfbe11533c4666cf8"
@@ -84,7 +83,9 @@
     "github.com/bitrise-io/go-utils/log",
     "github.com/bitrise-tools/go-steputils/tools",
     "github.com/ryanuber/go-glob",
-    "github.com/stretchr/testify",
+    "github.com/stretchr/testify/assert",
+    "github.com/stretchr/testify/mock",
+    "github.com/stretchr/testify/require",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1
