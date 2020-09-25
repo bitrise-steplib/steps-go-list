@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func Test_ListPackages2(t *testing.T) {
+func Test_ListPackages(t *testing.T) {
 	t.Run("Test list packages", func(t *testing.T) {
 		expectedResult := []string{
 			"github.com/bitrise-steplib/steps-go-list",
