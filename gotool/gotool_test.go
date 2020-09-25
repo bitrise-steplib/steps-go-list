@@ -5,70 +5,59 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
+	"github.com/stretchr/testify/require"
 )
 
-type TestCommander struct {
-	ExecuteCommandFn func(command string, args ...string) (string, error)
-}
+func Test_ListPackages2(t *testing.T) {
+	t.Run("Test list packages", func(t *testing.T) {
+		expectedResult := []string{
+			"github.com/bitrise-steplib/steps-go-list",
+			"github.com/bitrise-steplib/steps-go-list/gotool",
+		}
 
-func (c TestCommander) ExecuteCommand(command string, args ...string) (string, error) {
-	if c.ExecuteCommandFn == nil {
-		panic("You have to override TestCommander.ExecuteCommand function in tests")
-	}
-	return c.ExecuteCommandFn(command, args...)
-}
+		mockCommander := GivenMockCommander()
+		mockCommander.
+			On("ExecuteCommand", mock.Anything, mock.Anything).
+			Return(
+				"github.com/bitrise-steplib/steps-go-list\ngithub.com/bitrise-steplib/steps-go-list/gotool", nil)
 
-func Test_ListPackages(t *testing.T) {
-	testCases := []struct {
-		desc               string
-		executionResultRaw string
-		expectedError      error
-		expectedResult     []string
-		commander          Commander
-	}{
-		{
-			desc:          "Test list packages",
-			expectedError: nil,
-			expectedResult: []string{
-				"github.com/bitrise-steplib/steps-go-list",
-				"github.com/bitrise-steplib/steps-go-list/gotool",
-			},
-			commander: TestCommander{
-				ExecuteCommandFn: func(command string, args ...string) (string, error) {
-					return "github.com/bitrise-steplib/steps-go-list\ngithub.com/bitrise-steplib/steps-go-list/gotool", nil
-				},
-			},
-		},
-		{
-			desc:          "Test list packages with empty line",
-			expectedError: nil,
-			expectedResult: []string{
-				"github.com/bitrise-steplib/steps-go-list",
-				"github.com/bitrise-steplib/steps-go-list/gotool",
-			},
-			commander: TestCommander{
-				ExecuteCommandFn: func(command string, args ...string) (string, error) {
-					return "github.com/bitrise-steplib/steps-go-list\ngithub.com/bitrise-steplib/steps-go-list/gotool\n", nil
-				},
-			},
-		},
-		{
-			desc:           "Package list error",
-			expectedError:  errors.New("Listing error"),
-			expectedResult: nil,
-			commander: TestCommander{
-				ExecuteCommandFn: func(command string, args ...string) (string, error) {
-					return "", errors.New("Listing error")
-				},
-			},
-		},
-	}
-	for _, tC := range testCases {
-		t.Run(tC.desc, func(t *testing.T) {
-			packages, err := ListPackages(tC.commander)
+		packages, err := ListPackages(mockCommander)
 
-			assert.Equal(t, tC.expectedError, err)
-			assert.Equal(t, tC.expectedResult, packages)
-		})
-	}
+		require.NoError(t, err)
+		assert.Equal(t, expectedResult, packages)
+		mockCommander.AssertExpectations(t)
+	})
+
+	t.Run("Test list packages with empty line", func(t *testing.T) {
+		expectedResult := []string{
+			"github.com/bitrise-steplib/steps-go-list",
+			"github.com/bitrise-steplib/steps-go-list/gotool",
+		}
+
+		mockCommander := GivenMockCommander()
+		mockCommander.
+			On("ExecuteCommand", mock.Anything, mock.Anything).
+			Return(
+				"github.com/bitrise-steplib/steps-go-list\ngithub.com/bitrise-steplib/steps-go-list/gotool\n", nil)
+
+		packages, err := ListPackages(mockCommander)
+
+		require.NoError(t, err)
+		assert.Equal(t, expectedResult, packages)
+		mockCommander.AssertExpectations(t)
+	})
+
+	t.Run("Package list error", func(t *testing.T) {
+		mockCommander := GivenMockCommander()
+		mockCommander.
+			On("ExecuteCommand", mock.Anything, mock.Anything).
+			Return(
+				"", errors.New("Listing error"))
+
+		packages, _ := ListPackages(mockCommander)
+
+		assert.Equal(t, []string(nil), packages)
+		mockCommander.AssertExpectations(t)
+	})
 }

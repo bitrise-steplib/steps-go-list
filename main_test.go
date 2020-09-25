@@ -7,15 +7,17 @@ import (
 )
 
 func Test_filterPackages(t *testing.T) {
-	a := []string{"a", "b", "c"}
-	b := []string{"a", "b"}
+	original := []string{"same", "same_too", "Expected"}
+	excludes := []string{"same", "same_too"}
 
-	diffResult := filterLines(a, b)
+	diffResult := filterLines(original, excludes)
 
 	filteredLines := FilteredLines{}
-	filteredLines.Expected = []string{"c"}
+	filteredLines.Expected = []string{"Expected"}
+	filteredLines.Removed = []string{"same", "same_too"}
 
 	assert.Equal(t, filteredLines.Expected, diffResult.Expected)
+	assert.Equal(t, filteredLines.Removed, diffResult.Removed)
 }
 
 func Test_ClearCommandResult(t *testing.T) {

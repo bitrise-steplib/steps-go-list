@@ -7,6 +7,11 @@ import (
 	"github.com/bitrise-io/go-utils/command"
 )
 
+// Commander ...
+type Commander interface {
+	ExecuteCommand(string, ...string) (string, error)
+}
+
 // CommandExecutor ...
 type CommandExecutor struct{}
 
