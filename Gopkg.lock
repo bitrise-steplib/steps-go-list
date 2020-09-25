@@ -3,31 +3,42 @@
 
 [[projects]]
   branch = "master"
+  digest = "1:fe56f7b3f75f96cbd83ab4496283e43312c9917142ed83254bba216278519127"
   name = "github.com/bitrise-io/go-utils"
   packages = [
     "colorstring",
     "command",
     "errorutil",
     "log",
-    "pathutil"
+    "pathutil",
   ]
+  pruneopts = "UT"
   revision = "b33f6bcef9b50045d7e62364b354584afc3ee329"
 
 [[projects]]
   branch = "master"
+  digest = "1:659157c334882ba37fe50584d691ea469fb6e708a49e81dcd4381fef6ba611b0"
   name = "github.com/bitrise-tools/go-steputils"
   packages = ["tools"]
+  pruneopts = "UT"
   revision = "d4d9e08cc4347e8784bb18419fcdceb932e17019"
 
 [[projects]]
+  digest = "1:0e792eea6c96ec55ff302ef33886acbaa5006e900fefe82689e88d96439dcd84"
   name = "github.com/ryanuber/go-glob"
   packages = ["."]
+  pruneopts = "UT"
   revision = "572520ed46dbddaed19ea3d9541bdd0494163693"
   version = "v0.1"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "380dee101da91efcb491b465e958775684632c92bb5d9aa03af2dbcb6bec5556"
+  input-imports = [
+    "github.com/bitrise-io/go-utils/command",
+    "github.com/bitrise-io/go-utils/log",
+    "github.com/bitrise-tools/go-steputils/tools",
+    "github.com/ryanuber/go-glob",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1
