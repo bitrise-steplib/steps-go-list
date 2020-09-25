@@ -49,14 +49,16 @@ func Test_ListPackages2(t *testing.T) {
 	})
 
 	t.Run("Package list error", func(t *testing.T) {
+		resultError := errors.New("Listing error")
 		mockCommander := GivenMockCommander()
 		mockCommander.
 			On("ExecuteCommand", mock.Anything, mock.Anything).
 			Return(
-				"", errors.New("Listing error"))
+				"", resultError)
 
-		packages, _ := ListPackages(mockCommander)
+		packages, err := ListPackages(mockCommander)
 
+		require.EqualError(t, err, resultError.Error())
 		assert.Equal(t, []string(nil), packages)
 		mockCommander.AssertExpectations(t)
 	})
