@@ -48,7 +48,7 @@ func main() {
 	}
 
 	log.Infof("\nList of packages:")
-	filteredPackages := filterLines(commandResult, excludes)
+	filteredPackages := filterLines(filteredOutput.Expected, excludes)
 	for _, l := range filteredPackages.Removed {
 		log.Printf("- %s", l)
 	}
