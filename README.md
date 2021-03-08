@@ -1,11 +1,11 @@
-# Go list [![Bitrise Build Status](https://app.bitrise.io/app/e783d140de7df9d9/status.svg?token=RsL0h68Nd4D8wA_CtODchQ&branch=master)](https://app.bitrise.io/app/e783d140de7df9d9) [![Step Version](https://img.shields.io/badge/version-0.10.1-blue)](https://www.bitrise.io/integrations/steps/go-list) [![GitHub License](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://raw.githubusercontent.com/bitrise-steplib/steps-export-xcarchive/master/LICENSE) [![Bitrise Community](https://img.shields.io/badge/community-Bitrise%20Discuss-lightgrey)](https://discuss.bitrise.io/)
+# Go list [![Bitrise Build Status](https://app.bitrise.io/app/e783d140de7df9d9/status.svg?token=RsL0h68Nd4D8wA_CtODchQ&branch=master)](https://app.bitrise.io/app/e783d140de7df9d9) [![Bitrise Step Version](https://img.shields.io/badge/version-0.10.1-blue)](https://www.bitrise.io/integrations/steps/go-list) [![GitHub License](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://raw.githubusercontent.com/bitrise-steplib/steps-go-list/master/LICENSE) [![Bitrise Community](https://img.shields.io/badge/community-Bitrise%20Discuss-lightgrey)](https://discuss.bitrise.io/)
 
 This step runs the `go list ./...` command for you to list the go packages named by the import paths, starting from the current working directory.  
 It can return a filtered package list in line with the exclude patterns.
 
 ## Examples
 
-### List packages in workin directory excluding the vendor directory
+### List packages in the working directory excluding vendor/*
 
 ```yml
 ---
