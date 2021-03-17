@@ -37,7 +37,7 @@ workflows:
 
 ## Contributing
 
-We welcome [pull requests](/pulls) and [issues](/issues) against this repository. 
+We welcome [pull requests](https://github.com/bitrise-steplib/steps-go-list/pulls) and [issues](https://github.com/bitrise-steplib/steps-go-list/issues) against this repository. 
 
 For pull requests, work on your changes in a forked repository and use the bitrise cli to [run your tests locally](https://devcenter.bitrise.io/bitrise-cli/run-your-first-build/)
 
