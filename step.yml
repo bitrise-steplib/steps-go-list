@@ -1,10 +1,9 @@
 title: Go list
-summary: Runs go list ./... command
+summary: This step runs the `go list ./...` command for you to list the go packages named by the import paths.
 description: |-
-    Runs `go list ./...` command in the current working directory (should be your go project's dir).
-    The package list is filtered by the given exclude patterns.
-
-website: https://github.com/bitrise-steplib/steps-go-list
+    This step runs the `go list ./...` command for you to list the go packages named by the import paths, starting from the current working directory.  
+    It can return a filtered package list in line with the exclude patterns.
+website: https://www.bitrise.io/integrations/steps/go-list
 source_code_url: https://github.com/bitrise-steplib/steps-go-list
 support_url: https://github.com/bitrise-steplib/steps-go-list/issues
 
