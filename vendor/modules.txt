@@ -10,8 +10,6 @@ github.com/bitrise-io/go-utils/pathutil
 github.com/bitrise-tools/go-steputils/tools
 # github.com/davecgh/go-spew v1.1.1
 github.com/davecgh/go-spew/spew
-# github.com/kisielk/errcheck v1.6.0
-## explicit
 # github.com/pmezard/go-difflib v1.0.0
 github.com/pmezard/go-difflib/difflib
 # github.com/ryanuber/go-glob v0.0.0-20160226084822-572520ed46db
@@ -25,14 +23,6 @@ github.com/stretchr/objx
 github.com/stretchr/testify/assert
 github.com/stretchr/testify/mock
 github.com/stretchr/testify/require
-# golang.org/x/lint v0.0.0-20201208152925-83fdc39ff7b5
-## explicit
-# golang.org/x/mod v0.4.1
-## explicit
-# golang.org/x/sys v0.0.0-20210308170721-88b6017d0656
-## explicit
-# golang.org/x/tools v0.1.0
-## explicit
 # gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776
 ## explicit
 gopkg.in/yaml.v3
