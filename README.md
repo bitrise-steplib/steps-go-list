@@ -44,3 +44,5 @@ For pull requests, work on your changes in a forked repository and use the bitri
 ### Creating your own steps
 
 Follow [this guide](https://devcenter.bitrise.io/contributors/create-your-own-step/) if you would like to create your own step
+
+Test change
